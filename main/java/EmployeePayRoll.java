@@ -1,33 +1,41 @@
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class EmployeePayRoll {
     public static void main(String[] args) {
         String FETCH = "SELECT * FROM employee_payroll";
+        ArrayList<Employee> empList = new ArrayList<Employee>();
         EmployeeConfig eConfig = new EmployeeConfig();
         eConfig.getConfig();
-        PreparedStatement preparedStatement = null;
+        PreparedStatement preparedStatement;
         try {
             preparedStatement = eConfig.getConfig().prepareStatement(FETCH);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                System.out.print("EmpId: " + resultSet.getInt("EmpId") + ",");
-                System.out.print("EmpName: " + resultSet.getString("EmpName") + ",");
-                System.out.print("PhoneNumber: " + resultSet.getString("PhoneNumber") + ",");
-                System.out.print("Address: " + resultSet.getString("Address") + ",");
-                System.out.print("Department: " + resultSet.getString("Department") + ",");
-                System.out.print("Gender: " + resultSet.getString("Gender") + ",");
-                System.out.print("BasicPay: " + resultSet.getString("BasicPay") + ",");
-                System.out.print("Deductions: " + resultSet.getString("Deductions") + ",");
-                System.out.print("TaxablePay: " + resultSet.getString("TaxablePay") + ",");
-                System.out.print("IncomeTax: " + resultSet.getString("IncomeTax") + ",");
-                System.out.print("NetPay: " + resultSet.getString("NetPay") + ",");
-                System.out.print("EmpStart: " + resultSet.getString("EmpStart"));
-                System.out.println("-------------------------------------------");
+                Employee employee = new Employee();
+
+                employee.setEmpId(resultSet.getInt("EmpId"));
+                employee.setEmpName(resultSet.getString("EmpName"));
+                employee.setPhoneNumber(resultSet.getString("PhoneNumber"));
+                employee.setAddress(resultSet.getString("Address"));
+                employee.setDepartment(resultSet.getString("Department"));
+                employee.setEmpStart(resultSet.getString("EmpStart"));
+                employee.setBasicPay(resultSet.getDouble("BasicPay"));
+                employee.setDeductions(resultSet.getDouble("Deductions"));
+                employee.setTaxablePay(resultSet.getDouble("TaxablePay"));
+                employee.setIncomeTax(resultSet.getDouble("IncomeTax"));
+                employee.setNetPay(resultSet.getDouble("NetPay"));
+
+                empList.add(employee);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+            for (Employee i : empList) {
+                System.out.println(i.toString());
+            }
+        }
+        catch (SQLException e) {
+            throw new EmployeeException("invalid column label");
         }
     }
 }
