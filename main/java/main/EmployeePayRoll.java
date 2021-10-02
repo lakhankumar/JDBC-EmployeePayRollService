@@ -37,10 +37,7 @@ public class EmployeePayRoll {
                     LocalDate eDate = LocalDate.parse(scanner.next());
                     employeePayRollService.selectEmployee(iDate,eDate);
                 }
-                case 5->{
-                    employeePayRollService.calculate();
-                }
-
+                case 5-> employeePayRollService.calculate();
                 case EXIT -> System.out.println("good bye");
             }
         }
